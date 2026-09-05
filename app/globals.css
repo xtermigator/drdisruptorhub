@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html { background: #f3f1eb; }
+body { margin: 0; color: #162033; background: #f3f1eb; font-family: var(--font-inter), sans-serif; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #f58045; outline-offset: 3px; }
+.display { font-family: var(--font-manrope), sans-serif; letter-spacing: -.035em; }
+.card { background: rgba(255,255,255,.94); border: 1px solid rgba(23,36,59,.07); box-shadow: 0 12px 35px rgba(31,43,62,.06); }
+.subtle-grid { background-image: radial-gradient(rgba(23,36,59,.08) .7px, transparent .7px); background-size: 18px 18px; }
+@media (prefers-reduced-motion: no-preference) { .fade-in { animation: enter .45s ease both; } @keyframes enter { from { opacity: 0; transform: translateY(8px) } } }

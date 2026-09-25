@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Join the Dr. Disruptor Network</title>
+  <meta name="description" content="Join the Dr. Disruptor Network for accessibility, innovation, education, research, publishing, technology, and community updates." />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="card" aria-labelledby="title">
+      <p class="eyebrow">DR. DISRUPTOR NETWORK</p>
+      <h1 id="title">Join the Network</h1>
+      <p class="tagline">Removing Barriers. Revealing Potential.</p>
+      <p class="lede">Connect with projects, resources, research, technology, books, education, accessibility initiatives, and opportunities across our growing network.</p>
+
+      <form id="join-form">
+        <div class="grid">
+          <label>First name
+            <input name="first_name" autocomplete="given-name" required />
+          </label>
+          <label>Last name <span>(optional)</span>
+            <input name="last_name" autocomplete="family-name" />
+          </label>
+        </div>
+
+        <label>Email address
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+
+        <label>Mobile number <span>(optional unless you choose text updates)</span>
+          <input name="phone" type="tel" autocomplete="tel" />
+        </label>
+
+        <fieldset>
+          <legend>What would you like to hear about?</legend>
+          <div class="checks" id="interests"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Communication permissions</legend>
+          <label class="check"><input name="email_consent" type="checkbox" /> I would like to receive email updates.</label>
+          <label class="check"><input name="sms_consent" type="checkbox" /> I agree to receive occasional text-message updates. Message and data rates may apply. Reply STOP to opt out.</label>
+        </fieldset>
+
+        <input type="hidden" name="source_site" id="source_site" value="Dr. Disruptor Network" />
+        <input type="hidden" name="source_page" id="source_page" />
+        <input type="hidden" name="campaign" id="campaign" />
+
+        <button type="submit">Join the Network</button>
+        <p id="status" role="status" aria-live="polite"></p>
+        <p class="privacy">We use the information you provide only for the updates you choose. Email and text permissions are stored separately.</p>
+      </form>
+    </section>
+  </main>
+
+<script>
+const interestNames = [
+  "Accessibility & Disability Advocacy",
+  "AI & Innovation",
+  "Neurodiversity",
+  "Education & Research",
+  "XTERMIGATOR Kids",
+  "Hellenic Kids",
+  "Books & Publishing",
+  "Apps & Technology",
+  "Partnerships & Collaborations",
+  "Community Events"
+];
+
+const interestBox = document.getElementById("interests");
+interestNames.forEach(name => {
+  const label = document.createElement("label");
+  label.className = "check";
+  label.innerHTML = `<input type="checkbox" value="${name}"> ${name}`;
+  interestBox.appendChild(label);
+});
+
+const params = new URLSearchParams(location.search);
+document.getElementById("source_site").value = params.get("source") || "Dr. Disruptor Network";
+document.getElementById("source_page").value = params.get("page") || location.pathname;
+document.getElementById("campaign").value = params.get("campaign") || "";
+
+document.getElementById("join-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const status = document.getElementById("status");
+  status.textContent = "Saving your preferences…";
+
+  const interests = [...interestBox.querySelectorAll("input:checked")].map(i => i.value);
+  const payload = {
+    first_name: form.first_name.value,
+    last_name: form.last_name.value,
+    email: form.email.value,
+    phone: form.phone.value,
+    email_consent: form.email_consent.checked,
+    sms_consent: form.sms_consent.checked,
+    interests,
+    source_site: form.source_site.value,
+    source_page: form.source_page.value,
+    campaign: form.campaign.value
+  };
+
+  const response = await fetch("/api/signup", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+  });
+  const data = await response.json();
+
+  if (!response.ok || !data.ok) {
+    status.textContent = data.error || "Unable to save your signup.";
+    return;
+  }
+
+  form.reset();
+  status.textContent = "You’re connected. Thank you for joining the Dr. Disruptor Network.";
+});
+</script>
+</body>
+</html>

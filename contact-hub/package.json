@@ -1,0 +1,12 @@
+{
+  "name": "dr-disruptor-contact-hub",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@netlify/database": "latest",
+    "@netlify/functions": "latest"
+  }
+}
